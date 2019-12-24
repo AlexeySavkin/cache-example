@@ -1,0 +1,68 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: init
+      author: AlexeyASavkin
+      runOnChange: true
+      changes:
+        - sql:
+            comment: Init schema and tables
+            splitStatements: true
+            stripComments: true
+            sql:
+              create schema if not exists cache;
+
+              create table if not exists cache."group"
+              (
+              id uuid not null
+              constraint group_pk
+              primary key,
+              code varchar(127) not null,
+              name varchar(255) not null
+              );
+
+              comment on table cache."group" is 'Группы пользователей';
+
+              comment on column cache."group".id is 'Идентификатор';
+
+              comment on column cache."group".code is 'Код';
+
+              comment on column cache."group".name is 'Наименование';
+
+              alter table cache."group" owner to testuser;
+
+              create unique index if not exists group_code_uindex
+              on cache."group" (code);
+
+              insert into cache.group values ('6b0fae74-3fd4-4fe1-a7f9-71c960c05945', 'DEVELOPERS', 'Developers') on conflict do nothing;
+              insert into cache.group values ('e1484b9e-f2e7-415a-aa51-8759f0433ff4', 'ANALYSTS', 'Analysts') on conflict do nothing;
+
+              create table if not exists cache."user"
+              (
+              id uuid not null
+              constraint user_pk
+              primary key,
+              group_id uuid not null
+              constraint user_group_id_fk
+              references cache."group",
+              name varchar(255)
+              );
+
+              comment on table cache."user" is 'Пользователи';
+
+              comment on column cache."user".id is 'Идентификатор';
+
+              comment on column cache."user".group_id is 'Группа пользователя';
+
+              comment on column cache."user".name is 'Имя';
+
+              alter table cache."user" owner to testuser;
+
+              create unique index if not exists user_name_uindex
+              on cache."user" (name);
+
+              insert into cache.user values ('0c29760e-427b-4c9d-8b36-bd26c6871464', '6b0fae74-3fd4-4fe1-a7f9-71c960c05945', 'Alice') on conflict do nothing;
+              insert into cache.user values ('5256a3fc-ce8e-4e66-9acf-e79af3a67a61', '6b0fae74-3fd4-4fe1-a7f9-71c960c05945', 'Bob') on conflict do nothing;
+              insert into cache.user values ('5e41fef5-b531-4ad5-9764-822ea0b7497e', 'e1484b9e-f2e7-415a-aa51-8759f0433ff4', 'Charlie') on conflict do nothing;
+              insert into cache.user values ('9a8e52b5-4390-475a-a942-e68ebcc2b2cc', 'e1484b9e-f2e7-415a-aa51-8759f0433ff4', 'Dave') on conflict do nothing;
+              insert into cache.user values ('55b3408d-2143-4199-a376-867c2ae71d24', 'e1484b9e-f2e7-415a-aa51-8759f0433ff4', 'Eve') on conflict do nothing;
