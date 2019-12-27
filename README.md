@@ -1,8 +1,8 @@
 # Пример работы с кэшем Hazelcast
 
-## Запуск Hazelcast Management Center
-Выполняем команду <code>docker run -p 8080:8080 hazelcast/management-center</code>
-Hazelcast Management Center будет доступен по URL - http://localhost:8080/hazelcast-mancenter/login.html
+## Настройка окружения
+- В коммандной строке переходим в директорию <code>docker</code>
+- Выполняем комманду <code>docker-compose up</code>. Выполнится запуск сервисов: PostgreSQL, Hazelcast, Hazelcast management center.
 
-## Запуск Hazelcast
-Выполняем команду <code>docker run -ti -e MANCENTER_URL="http://localhost:8080/hazelcast-mancenter" hazelcast/hazelcast</code>
+## Работа с Hazelcast management center
+- Сервис будет досупен по URL - http://localhost:8080/hazelcast-mancenter/

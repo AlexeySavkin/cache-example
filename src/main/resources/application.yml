@@ -41,6 +41,11 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
 
+logging:
+  level:
+#    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+
 management:
   server:
     port: 8081

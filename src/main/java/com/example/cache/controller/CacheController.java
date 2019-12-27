@@ -2,6 +2,7 @@ package com.example.cache.controller;
 
 import com.example.cache.entity.GroupEntity;
 import com.example.cache.entity.UserEntity;
+import com.example.cache.service.CacheService;
 import com.example.cache.service.GroupService;
 import com.example.cache.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,13 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class CacheController {
 
     private final UserService userService;
 
     private final GroupService groupService;
+
+    private final CacheService cacheService;
 
     @GetMapping("/")
     public String home() {
@@ -46,5 +49,15 @@ public class UserController {
         GroupEntity group = groupService.getGroup(id);
 
         return group.toString();
+    }
+
+    @GetMapping("/allUserInfo")
+    public String getAllUserInfo() {
+        return cacheService.getAllUserInfo().toString();
+    }
+
+    @GetMapping("/users/{name}")
+    public String getUsersByName(@PathVariable("name") String name) {
+        return cacheService.getUsersByName(name).toString();
     }
 }
